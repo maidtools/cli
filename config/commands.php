@@ -67,10 +67,6 @@ return [
         LaravelZero\Framework\Commands\InstallCommand::class,
         LaravelZero\Framework\Commands\RenameCommand::class,
 
-        Pest\Laravel\Commands\PestDatasetCommand::class,
-        Pest\Laravel\Commands\PestInstallCommand::class,
-        Pest\Laravel\Commands\PestTestCommand::class,
-
         NunoMaduro\Collision\Adapters\Laravel\Commands\TestCommand::class,
     ],
 
