@@ -4,29 +4,6 @@ namespace App;
 
 class Helper
 {
-    public static function cleanDirectory(string $dir): float
-    {
-        $size = 0;
-
-        $structure = glob(rtrim($dir, "/") . '/{,.}[!.,!..]*', GLOB_MARK | GLOB_BRACE);
-        if (is_array($structure)) {
-            foreach ($structure as $file) {
-                if (in_array($file, ['..', '.'])) {
-                    continue;
-                } elseif (is_dir($file)) {
-                    $size += self::cleanDirectory($file);
-                } elseif (is_file($file)) {
-                    $size += filesize($file);
-                    unlink($file);
-                }
-            }
-        }
-
-        rmdir($dir);
-
-        return $size;
-    }
-
     public static function formatFilesize(float $size): string
     {
         $units = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
@@ -47,5 +24,17 @@ class Helper
             default:
                 return ['vendor', 'composer.json'];
         }
+    }
+
+    public static function ignored($cwd = null, $ignored = ['..', '.']): array
+    {
+        $cwd = $cwd ?? getcwd();
+        $ignoreFile = sprintf('%s%s.maidignore', $cwd, DIRECTORY_SEPARATOR);
+
+        if (is_file($ignoreFile)) {
+            $ignored = array_merge($ignored, array_filter(explode(PHP_EOL, file_get_contents($ignoreFile))));
+        }
+
+        return $ignored;
     }
 }

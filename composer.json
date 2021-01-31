@@ -1,8 +1,8 @@
 {
-    "name": "ghostzero/broom",
+    "name": "ghostzero/maid",
     "description": "Cleanup tool for vendor and node_modules directories.",
     "keywords": [
-        "broom",
+        "maid",
         "composer",
         "node_modules",
         "cleanup"
@@ -17,6 +17,7 @@
     ],
     "require": {
         "php": "^7.3|^8.0",
+        "composer/composer": "^2.0",
         "laravel-zero/framework": "^8.4"
     },
     "require-dev": {
@@ -41,6 +42,6 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "bin": [
-        "broom"
+        "maid"
     ]
 }
