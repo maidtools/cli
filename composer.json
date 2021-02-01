@@ -16,13 +16,18 @@
         }
     ],
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.4|^8.0",
+        "ext-openssl": "*",
+        "ext-sodium": "*",
         "composer/composer": "^2.0",
-        "laravel-zero/framework": "^8.4"
+        "guzzlehttp/guzzle": "^7.0",
+        "jolicode/jolinotif": "^2.2",
+        "ext-json": "*"
     },
     "require-dev": {
         "mockery/mockery": "^1.4.2",
-        "pestphp/pest": "^1.0"
+        "pestphp/pest": "^1.0",
+        "laravel-zero/framework": "^8.4"
     },
     "autoload": {
         "psr-4": {
@@ -42,6 +47,6 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "bin": [
-        "maid"
+        "builds/maid"
     ]
 }

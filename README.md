@@ -12,7 +12,7 @@ composer global require ghostzero/maid
 ## Usage
 
 ```bash
-maid cleanup
+maid clean
 ```
 
 ## Update

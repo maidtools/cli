@@ -3,35 +3,24 @@
 namespace App\Commands;
 
 use App\Helper;
-use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
 class IgnoreCommand extends Command
 {
-    /**
-     * The signature of the command.
-     *
-     * @var string
-     */
-    protected $signature = 'ignore {directory} {--remove}';
+    protected $signature = 'ignore {directory?} {--remove}';
 
-    /**
-     * The description of the command.
-     *
-     * @var string
-     */
     protected $description = 'Modify the .maidignore file.';
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle(): int
     {
-        $ignored = Helper::ignored(null, []);
-
         $value = $this->argument('directory');
+
+        if ($value === null) {
+            system('nano .maidignore > `tty`');
+            return 0;
+        }
+
+        $ignored = Helper::ignored(null, []);
 
         if ($this->option('remove')) {
             $this->remove($ignored, $value);
@@ -41,20 +30,9 @@ class IgnoreCommand extends Command
 
         $ignored = array_unique(array_filter($ignored));
 
-        file_put_contents(getcwd() . '/.maidignore', implode(PHP_EOL, $ignored));
+        file_put_contents(getcwd() . '/.maidignore', implode(PHP_EOL, $ignored) . PHP_EOL);
 
         return 0;
-    }
-
-    /**
-     * Define the command's schedule.
-     *
-     * @param \Illuminate\Console\Scheduling\Schedule $schedule
-     * @return void
-     */
-    public function schedule(Schedule $schedule): void
-    {
-        // $schedule->command(static::class)->everyMinute();
     }
 
     private function remove(array &$ignored, string $value)
