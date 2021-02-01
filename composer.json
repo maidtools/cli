@@ -17,12 +17,13 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
+        "ext-json": "*",
         "ext-openssl": "*",
         "ext-sodium": "*",
         "composer/composer": "^2.0",
         "guzzlehttp/guzzle": "^7.0",
         "jolicode/jolinotif": "^2.2",
-        "ext-json": "*"
+        "padraic/phar-updater": "^1.0.6"
     },
     "require-dev": {
         "mockery/mockery": "^1.4.2",
