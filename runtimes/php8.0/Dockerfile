@@ -2,7 +2,7 @@ FROM ubuntu:20.04
 
 LABEL maintainer="René Preuß"
 
-ARG WWWGROUP
+ARG WWWGROUP=33
 ARG CICD_GIT_COMMIT
 
 WORKDIR /var/www/html
