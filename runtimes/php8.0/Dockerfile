@@ -15,7 +15,7 @@ ENV TZ=UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update \
-    && apt-get install -y software-properties-common curl ca-certificates zip unzip git supervisor sqlite3 \
+    && apt-get install -y software-properties-common gosu curl ca-certificates zip unzip git supervisor sqlite3 \
     && add-apt-repository ppa:ondrej/php \
     && apt-get install -y php8.0-cli \
         php8.0-curl php8.0-mbstring php8.0-xml php8.0-zip php8.0-bcmath php8.0-intl php8.0-readline \
