@@ -15,6 +15,11 @@ class IgnoreCommand extends Command
     {
         $value = $this->argument('directory');
 
+        if ($value === null && strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $this->warn('Please use `maid ignore {directory}`');
+            return 0;
+        }
+
         if ($value === null) {
             system('nano .maidignore > `tty`');
             return 0;

@@ -9,7 +9,7 @@ use LaravelZero\Framework\Commands\Command;
 class CleanCommand extends Command
 {
     protected $signature = 'clean
-                                {vendor=vendor}
+                                {vendor=npm}
                                 {--dry-run} : Simulate the command without deletion directories.
                                 {--force} : Ignores the confirm during the deletion process.';
 
@@ -26,17 +26,34 @@ class CleanCommand extends Command
 
     public function handle(): int
     {
-        [$vendor, $vendorFile] = Helper::getVendor($this->argument('vendor'));
+        $vendors = explode(',', $this->argument('vendor'));
+
+        foreach ($vendors as $vendor) {
+            [$vendor, $vendorFile] = Helper::getVendor($vendor);
+            $statusCode = $this->cleanupVendor($vendor, $vendorFile);
+            if ($statusCode > 0) {
+                return $statusCode;
+            }
+        }
+
+        return 0;
+    }
+
+    private function cleanupVendor(string $vendor, string $vendorFile): int
+    {
         $cwd = getcwd();
         $ignored = Helper::ignored($cwd);
 
         $scan = scandir($cwd);
+        $bar = $this->output->createProgressBar(count($scan));
+        $this->info("Checking for `{$vendor}` directories, this may take a while...");
 
         $directories = [];
 
         $possible = 0;
         $rows = [];
         foreach ($scan as $directory) {
+            $bar->advance();
             if (in_array($directory, $ignored)) {
                 continue;
             }
@@ -51,6 +68,9 @@ class CleanCommand extends Command
                 }
             }
         }
+
+        $bar->finish();
+        $this->output->newLine();
 
         if (count($directories) <= 0) {
             $this->info('There is nothing to do.');

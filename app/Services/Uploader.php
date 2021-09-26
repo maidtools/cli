@@ -4,7 +4,9 @@
 namespace App\Services;
 
 
+use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
 
 class Uploader
@@ -14,10 +16,14 @@ class Uploader
     public function __construct()
     {
         $this->client = new Client([
-            'base_uri' => 'http://maid.sh/api/',
+            'base_uri' => 'https://api.maid.sh/v1/',
         ]);
     }
 
+    /**
+     * @throws GuzzleException
+     * @throws Exception
+     */
     public function multipart(array $multipart, bool $plain): array
     {
         $key = random_bytes(SODIUM_CRYPTO_SECRETBOX_KEYBYTES);
@@ -45,6 +51,9 @@ class Uploader
         }, $files);
     }
 
+    /**
+     * @throws Exception
+     */
     private function encryptMultipart(array $multipart, string $secret): array
     {
         return array_map(function (array $multipart) use ($secret) {

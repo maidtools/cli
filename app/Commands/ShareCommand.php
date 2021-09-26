@@ -6,6 +6,7 @@ use App\Exceptions\EmptyShareException;
 use App\Exceptions\Exception;
 use App\Services\Clipboard;
 use App\Services\Uploader;
+use GuzzleHttp\Exception\GuzzleException;
 use Joli\JoliNotif\Notification;
 use Joli\JoliNotif\NotifierFactory;
 use LaravelZero\Framework\Commands\Command;
@@ -34,12 +35,12 @@ class ShareCommand extends Command
     /**
      * Execute the console command.
      *
-     * @param Clipboard $clipboard
-     * @return mixed
+     * @throws GuzzleException
      */
-    public function handle(Clipboard $clipboard, Uploader $uploader)
+    public function handle(Clipboard $clipboard, Uploader $uploader): int
     {
         $name = $this->argument('name') ?? 'encrypted.txt';
+
         try {
             $contents = $this->getContents($clipboard);
 
