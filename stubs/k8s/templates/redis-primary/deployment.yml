@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-primary
+  namespace: {{namespace}}
+spec:
+  selector:
+    matchLabels:
+      app: redis-primary
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis-primary
+    spec:
+      containers:
+        - name: primary
+          image: docker.io/bitnami/redis:6.2
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          env:
+            - name: REDIS_REPLICATION_MODE
+              value: "master"
+            - name: REDIS_PASSWORD
+              value: "{{password}}"
+            - name: REDIS_DISABLE_COMMANDS
+              value: "{{disable_commands}}"
+          ports:
+            - containerPort: 6379
