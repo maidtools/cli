@@ -41,8 +41,19 @@ class K8sApplyCommand extends Command
 
         $this->info('Applying k8s resources...');
 
+        $args = [
+            sprintf('-f %s', $serviceFile),
+            sprintf('-f %s', $deploymentFile),
+        ];
+
+        if (!empty($SERVER['KUBE_CONFIG_DATA'])) {
+            $tmpFile = tempnam(sys_get_temp_dir(), 'k8s');
+            file_put_contents($tmpFile, $SERVER['KUBE_CONFIG_DATA']);
+            $args[] = sprintf('--kubeconfig=%s', $tmpFile);
+        }
+
         K8s::runCommand(
-            'kubectl apply -f "' . K8s::base('service.yml') . '" -f "' . K8s::base('deployment.yml') . '"',
+            sprintf('kubectl apply %s', implode(' ', $args)),
             $this
         );
 
