@@ -57,7 +57,8 @@ class K8sApplyCommand extends Command
         // check if kubectl is available, if not install it
         if (!Helper::isCommandAvailable('kubectl')) {
             $this->info('kubectl not found, installing...');
-            Helper::installCommand('kubectl', true);
+            shell_exec('curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"');
+            shell_exec('chmod +x kubectl');
         }
 
         $isSuccessful = K8s::runCommand(
