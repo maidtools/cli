@@ -52,6 +52,14 @@ class K8sApplyCommand extends Command
             $args[] = sprintf('--kubeconfig=%s', $tmpFile);
         }
 
+        $this->info('Running kubectl apply...');
+
+        // check if kubectl is available, if not install it
+        if (!Helper::isCommandAvailable('kubectl')) {
+            $this->info('kubectl not found, installing...');
+            Helper::installCommand('kubectl', true);
+        }
+
         K8s::runCommand(
             sprintf('kubectl apply %s', implode(' ', $args)),
             $this

@@ -82,4 +82,19 @@ class Helper
 
         return preg_replace('/\n+/', "\n", $serviceContent);
     }
+
+    public static function isCommandAvailable(string $string): bool
+    {
+        $command = sprintf('which %s', $string);
+        return trim(shell_exec($command)) !== '';}
+
+    public static function installCommand(string $string, bool $snap = false)
+    {
+        if ($snap) {
+            $command = sprintf('sudo snap install %s --classic', $string);
+        } else {
+            $command = sprintf('sudo apt-get install %s', $string);
+        }
+        shell_exec($command);
+    }
 }
