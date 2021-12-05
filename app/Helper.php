@@ -88,13 +88,14 @@ class Helper
         $command = sprintf('which %s', $string);
         return trim(shell_exec($command)) !== '';}
 
-    public static function installCommand(string $string, bool $snap = false)
+    public static function installCommand(string $string, bool $snap = false): bool
     {
         if ($snap) {
             $command = sprintf('sudo snap install %s --classic', $string);
         } else {
             $command = sprintf('sudo apt-get install %s', $string);
         }
-        shell_exec($command);
+
+        return shell_exec($command) !== '';
     }
 }
