@@ -62,7 +62,7 @@ class K8sApplyCommand extends Command
         }
 
         $isSuccessful = K8s::runCommand(
-            sprintf('kubectl apply %s', implode(' ', $args)),
+            sprintf('./kubectl apply %s', implode(' ', $args)),
             $this
         );
 
