@@ -33,7 +33,7 @@
         "pestphp/pest": "^1.0"
     },
     "scripts": {
-        "build": "@php maid app:build maid --build-version=dev-master && git commit -am 'build: new dev version' && ggp"
+        "build": "@php maid app:build maid --build-version=dev-master && git commit -am 'build: new dev version' && git push"
     },
     "autoload": {
         "psr-4": {
