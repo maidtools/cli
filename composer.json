@@ -19,18 +19,21 @@
         "php": "^8.0",
         "ext-json": "*",
         "ext-openssl": "*",
-        "ext-sodium": "*",
+        "ext-sodium": "*"
+    },
+    "require-dev": {
         "composer/composer": "^2.0",
         "guzzlehttp/guzzle": "^7.0",
         "jolicode/jolinotif": "^2.2",
         "laravel-zero/framework": "^8.9",
         "mbaynton/launch-cli-editor": "^1.0",
         "padraic/phar-updater": "^1.0.6",
-        "symfony/yaml": "^6.0"
-    },
-    "require-dev": {
+        "symfony/yaml": "^6.0",
         "mockery/mockery": "^1.4.2",
         "pestphp/pest": "^1.0"
+    },
+    "scripts": {
+        "build": "@php maid app:build maid --build-version=dev-master && git commit -am 'build: new dev version' && ggp"
     },
     "autoload": {
         "psr-4": {
@@ -50,6 +53,6 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "bin": [
-        "maid"
+        "builds/maid"
     ]
 }
