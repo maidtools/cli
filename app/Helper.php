@@ -103,7 +103,11 @@ class Helper
         if ($snap) {
             $command = sprintf('snap install %s --classic', $string);
         } else {
-            $command = sprintf('apt-get install %s', $string);
+            $packageManager = self::detectPackageManager();
+            $command = match($packageManager) {
+                'apt' => sprintf('apt-get install %s', $string),
+                'apk' => sprintf('apk add %s', $string),
+            };
         }
 
         if (self::isCommandAvailable('sudo')) {
@@ -114,4 +118,16 @@ class Helper
 
         return shell_exec($command) !== '';
     }
+
+    private static function detectPackageManager(): string
+    {
+        if (self::isCommandAvailable('apt-get')) {
+            return 'apt';
+        }
+
+        if (self::isCommandAvailable('apk')) {
+            return 'apk';
+        }
+
+        return 'unknown';}
 }
