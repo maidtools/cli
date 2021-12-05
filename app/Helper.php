@@ -86,14 +86,25 @@ class Helper
     public static function isCommandAvailable(string $string): bool
     {
         $command = sprintf('which %s', $string);
-        return trim(shell_exec($command)) !== '';}
+        return trim(shell_exec($command)) !== '';
+    }
 
     public static function installCommand(string $string, bool $snap = false): bool
     {
+        if (self::isCommandAvailable($string)) {
+            return true;
+        }
+
         if ($snap) {
-            $command = sprintf('sudo snap install %s --classic', $string);
+            $command = sprintf('snap install %s --classic', $string);
         } else {
-            $command = sprintf('sudo apt-get install %s', $string);
+            $command = sprintf('apt-get install %s', $string);
+        }
+
+        if (self::isCommandAvailable('sudo')) {
+            $command = sprintf('sudo %s', $command);
+        } else {
+            $command = sprintf('%s', $command);
         }
 
         return shell_exec($command) !== '';
