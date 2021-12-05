@@ -46,9 +46,9 @@ class K8sApplyCommand extends Command
             sprintf('-f %s', $deploymentFile),
         ];
 
-        if (!empty($SERVER['KUBE_CONFIG_DATA'])) {
+        if (!empty($_SERVER['KUBE_CONFIG_DATA'])) {
             $tmpFile = tempnam(sys_get_temp_dir(), 'k8s');
-            file_put_contents($tmpFile, $SERVER['KUBE_CONFIG_DATA']);
+            file_put_contents($tmpFile, $_SERVER['KUBE_CONFIG_DATA']);
             $args[] = sprintf('--kubeconfig=%s', $tmpFile);
         }
 
