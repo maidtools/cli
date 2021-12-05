@@ -60,10 +60,15 @@ class K8sApplyCommand extends Command
             Helper::installCommand('kubectl', true);
         }
 
-        K8s::runCommand(
+        $isSuccessful = K8s::runCommand(
             sprintf('kubectl apply %s', implode(' ', $args)),
             $this
         );
+
+        if (!$isSuccessful) {
+            $this->error('Failed to apply k8s resources');
+            return 1;
+        }
 
         return 0;
     }

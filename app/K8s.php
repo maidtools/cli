@@ -9,7 +9,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class K8s
 {
-    public static function runCommand(string $string, Commands\K8sApplyCommand $param)
+    public static function runCommand(string $string, Commands\K8sApplyCommand $param): bool
     {
         $process = Process::fromShellCommandline($string);
         $process->setTimeout(300);
@@ -21,6 +21,8 @@ class K8s
                 $param->info(trim($buffer));
             }
         });
+
+        return $process->isSuccessful();
     }
 
     /**
