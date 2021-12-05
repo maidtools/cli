@@ -95,6 +95,11 @@ class Helper
             return true;
         }
 
+        if ($snap && !self::isCommandAvailable('snap')) {
+            // install snap
+            self::installCommand('snapd');
+        }
+
         if ($snap) {
             $command = sprintf('snap install %s --classic', $string);
         } else {
