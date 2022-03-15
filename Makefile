@@ -18,8 +18,7 @@ publish: build
 release: build-release
 	@echo "Publishing..."
 	git commit -am 'build: release version'
-	git tag -a "$(MAID_BUILD_VERSION)" -m "release version"
-	git push --tags
+	gh release create 1.3.1 --draft --title "Release $(MAID_BUILD_VERSION)"
 
 .PHONY: update
 update:
