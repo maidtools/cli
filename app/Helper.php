@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Symfony\Component\Yaml\Yaml;
+
 class Helper
 {
     public static function formatFilesize(float $size): string
