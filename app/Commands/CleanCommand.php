@@ -9,9 +9,9 @@ use LaravelZero\Framework\Commands\Command;
 class CleanCommand extends Command
 {
     protected $signature = 'clean
-                                {vendor=vendor}
-                                {--dry-run} : Simulate the command without deletion directories.
-                                {--force} : Ignores the confirm during the deletion process.';
+                {vendor=vendor}
+                {--dry-run} : Simulate the command without deletion directories.
+                {--force} : Ignores the confirm during the deletion process.';
 
     protected $description = 'Clean vendor folders.';
 

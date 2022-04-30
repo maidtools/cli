@@ -2,7 +2,6 @@
 
 namespace App\Commands;
 
-use App\Helper;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
