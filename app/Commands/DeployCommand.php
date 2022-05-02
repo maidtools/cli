@@ -2,25 +2,45 @@
 
 namespace App\Commands;
 
+use App\Traits\InteractsWithMaidApi;
+use GhostZero\Maid\Exceptions\RequestRequiresClientIdException;
+use GhostZero\Maid\Maid;
+use GhostZero\Maid\Support\Manifest;
+use GuzzleHttp\Exception\GuzzleException;
 use LaravelZero\Framework\Commands\Command;
 
 class DeployCommand extends Command
 {
+    use InteractsWithMaidApi;
+
     protected $signature = 'deploy {environment=staging}
                 {--asset-url= : The asset base URL}
-                {--build-arg=* : Docker build argument}';
+                {--build-arg=* : Docker build argument}
+                {--revision= : Docker image version}';
 
-    protected $description = 'Deploy the application';
+    protected $description = 'Deploy an environment';
 
-    public function handle(): int
+    /**
+     * @throws RequestRequiresClientIdException
+     * @throws GuzzleException
+     */
+    public function handle(Maid $maid): int
     {
-        $this->info('Building the application...');
+        $manifest = Manifest::get();
+
+        if (empty($manifest['environments'][$this->argument('environment')])) {
+            $this->warn(sprintf('Environment %s does not exist.', $this->argument('environment')));
+
+            return self::FAILURE;
+        }
+
+        $this->info(sprintf('Building the application for %s...', $this->argument('environment')));
 
         $result = $this->call('build', [
             'environment' => $this->argument('environment'),
             '--asset-url' => $this->option('asset-url'),
             '--build-arg' => $this->option('build-arg'),
-            '--revision' => $revision = 'latest',
+            '--revision' => $revision = $this->getRevision(),
         ]);
 
         if ($result !== self::SUCCESS) {
@@ -31,18 +51,34 @@ class DeployCommand extends Command
 
         $this->info('Deploying the application...');
 
-        $result = $this->call('redeploy', [
-            'environment' => $this->argument('environment'),
-            '--revision' => $revision,
-            '--force' => true,
-        ]);
+        $result = $maid
+            ->withUserAccessToken()
+            ->createDeployment($manifest['project'], [
+                'environment' => $this->argument('environment'),
+                'manifest' => $manifest,
+                'revision' => $revision,
+            ]);
 
-        if ($result !== self::SUCCESS) {
-            $this->warn('Deployment failed!');
-
-            return $result;
+        if (!$result->success()) {
+            return $this->failure($result, 'Deployment failed!');
         }
 
+        $this->info(sprintf(
+            'Deployment is live with revision %s.',
+            $revision,
+        ));
+
+        $this->info(sprintf('You can rollback with "maid rollback -e %s".', $this->argument('environment')));
+
         return self::SUCCESS;
+    }
+
+    private function getRevision(): string
+    {
+        if ($revision = $this->option('revision')) {
+            return $revision;
+        }
+
+        return time();
     }
 }

@@ -13,7 +13,7 @@ class BuildCommand extends Command
                 {--build-arg=* : Docker build argument}
                 {--revision= : Docker image version}';
 
-    protected $description = 'Build the application';
+    protected $description = 'Build the project container';
 
     public function handle(): int
     {

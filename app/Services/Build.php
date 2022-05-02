@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Maid;
 use Exception;
 use FilesystemIterator;
+use GhostZero\Maid\Support\Manifest;
 use Illuminate\Support\Str;
 use LaravelZero\Framework\Commands\Command;
 use RecursiveDirectoryIterator;
@@ -58,7 +58,7 @@ class Build
     private function validateManifest(): void
     {
         $environment = $this->command->argument('environment');
-        $manifest = Maid::getManifest();
+        $manifest = Manifest::get();
 
         if (!isset($manifest['name'])) {
             throw new Exception('The manifest file must contain a name.');
@@ -113,7 +113,17 @@ class Build
 
     private function deleteDirectory(string $target): void
     {
-        shell_exec('rm -rf ' . $target);
+        $files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($target, FilesystemIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST
+        );
+
+        foreach ($files as $file) {
+            $todo = ($file->isDir() ? 'rmdir' : 'unlink');
+            $todo($file->getRealPath());
+        }
+
+        rmdir($target);
     }
 
     /**
@@ -122,7 +132,7 @@ class Build
     private function executingBuildCommands(): void
     {
         $environment = $this->command->argument('environment');
-        $manifest = Maid::getManifest();
+        $manifest = Manifest::get();
         $commands = $manifest['environments'][$environment]['build'] ?? [];
 
         foreach ($commands as $command) {
@@ -142,10 +152,15 @@ class Build
     private function buildDockerImage()
     {
         $environment = $this->command->argument('environment');
-        $manifest = Maid::getManifest();
+        $manifest = Manifest::get();
         $revision = $this->getRevision();
         $this->latestImageName = sprintf(
-            '%s/%s:%s-%s', $this->getDockerRegistry(), $manifest['name'], $environment, $revision
+            '%s/%s/%s:%s-%s',
+            $this->getDockerRegistry(),
+            $this->getNamespace(),
+            $manifest['name'],
+            $environment,
+            $revision
         );
 
         $this->command->info(sprintf('Tagging docker image as %s', $this->latestImageName));
@@ -185,7 +200,7 @@ class Build
         // docker login bpkg.io -u $REGISTRY_USER -p $REGISTRY_PASS
         $loginProcess = new Process([
             'docker', 'login', $this->getDockerRegistry(),
-            '-u', 'k3s',
+            '-u', $this->getNamespace(),
             '-p', 'tpt8bBaWV8kkfdnPAn7E45vqEK6sXyhb',
         ]);
         $loginProcess->run(function ($type, $buffer) {
@@ -203,6 +218,11 @@ class Build
 
     private function getDockerRegistry(): string
     {
-        return 'bpkg.io';
+        return 'pkg.maid.sh';
+    }
+
+    private function getNamespace(): string
+    {
+        return Manifest::get('project');
     }
 }

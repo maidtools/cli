@@ -2,19 +2,32 @@
 
 namespace App\Commands;
 
-use App\Maid;
-use Exception;
+use App\Traits\InteractsWithMaidApi;
+use GhostZero\Maid\Exceptions\RequestRequiresClientIdException;
+use GhostZero\Maid\Maid;
+use GhostZero\Maid\Support\Manifest;
+use GuzzleHttp\Exception\GuzzleException;
 use LaravelZero\Framework\Commands\Command;
 
 class RollbackCommand extends Command
 {
+    use InteractsWithMaidApi;
+
     protected $signature = 'rollback
+                {--e|environment=staging : Rollback on a specific branch}
+                {--i|id= : Rollback on a specific deployment}
                 {--f|force : Force the rollback without asking for confirmation}';
 
-    protected $description = 'Rollback to the previous version';
+    protected $description = 'Rollback an environment to a previous deployment';
 
+    /**
+     * @throws RequestRequiresClientIdException
+     * @throws GuzzleException
+     */
     public function handle(Maid $maid): int
     {
+        $manifest = Manifest::get();
+
         if (!$this->option('force')) {
             if (!$this->confirm('Are you sure you want to rollback?')) {
                 return self::FAILURE;
@@ -23,18 +36,30 @@ class RollbackCommand extends Command
 
         $this->info('Rolling back to previous version...');
 
-        try {
-            $maid
-                ->withToken(Maid::getAccessToken())
-                ->rollback(Maid::getManifest('name'));
-
-            $this->info('Rollback successful!');
-        } catch (Exception $e) {
-            $this->error($e->getMessage());
-
-            return self::FAILURE;
+        if ($this->option('id')) {
+            $result = $maid
+                ->withUserAccessToken()
+                ->rollbackDeployment(
+                    $manifest['project'],
+                    $this->option('id'),
+                );
+        } else {
+            $result = $maid
+                ->withUserAccessToken()
+                ->rollbackLatestDeployment(
+                    $manifest['project'],
+                    [
+                        'environment' => $this->option('environment'),
+                    ]
+                );
         }
 
-        return self::SUCCESS;
+        if ($result->success()) {
+            $this->info('Rollback successful!');
+
+            return self::SUCCESS;
+        }
+
+        return $this->failure($result, 'Rollback failed.');
     }
 }

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="application/javascript">
+    fetch("/callback", {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: location.hash
+    }).then(res => {
+        console.log("Request complete! response:", res);
+        close();
+    });
+</script>
+</body>
+</html>
+

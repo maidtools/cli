@@ -23,22 +23,34 @@
     },
     "require-dev": {
         "composer/composer": "^2.0",
+        "ghostzero/maid-sdk": "dev-master",
         "guzzlehttp/guzzle": "^7.0",
         "jolicode/jolinotif": "^2.2",
         "laravel-zero/framework": "^8.9",
         "mbaynton/launch-cli-editor": "^1.0",
-        "padraic/phar-updater": "^1.0.6",
-        "symfony/yaml": "^6.0",
         "mockery/mockery": "^1.4.2",
-        "pestphp/pest": "^1.0"
+        "padraic/phar-updater": "^1.0.6",
+        "pestphp/pest": "^1.0",
+        "react/http": "^1.6",
+        "symfony/yaml": "^6.0",
+        "vlucas/phpdotenv": "^5.4"
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../maid-sdk"
+        }
+    ],
     "scripts": {
         "build": "make build"
     },
     "autoload": {
         "psr-4": {
             "App\\": "app/"
-        }
+        },
+        "files": [
+            "helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

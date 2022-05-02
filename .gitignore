@@ -4,3 +4,4 @@
 /.vagrant
 /k8s
 .phpunit.result.cache
+/credentials.json
