@@ -36,17 +36,23 @@ maid login
 
 ## Create a Manifest
 
-First we need to create a new `maid.yml`, the maid-cli tries to recognize components from the Laravel ecosystem and define them in your manifest file:
+First we need to create a `maid.yml` within the root directory of your project, this is done interactively by the following command:
 
 ```shell
 maid init
 ```
 
+> During the initialization process it tries to recognize frequently used Laravel ecosystem components from your project and also define them in your manifest file.
+
 ## Deploy your Application
+
+After initializing your project you can start to deploy your first version:
 
 ```shell
 maid deploy
 ```
+
+![](https://cdn.maid.sh/ghostzero/maid-cli-usage-v1.gif)
 
 # Commands
 
