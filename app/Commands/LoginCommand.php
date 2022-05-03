@@ -12,6 +12,7 @@ use React\EventLoop\Loop;
 use React\Http\HttpServer;
 use React\Http\Message\Response;
 use React\Socket\SocketServer;
+use Throwable;
 use function RingCentral\Psr7\parse_query;
 
 class LoginCommand extends Command
@@ -60,14 +61,20 @@ class LoginCommand extends Command
             return Response::html(file_get_contents(base_path('resources/views/cli.html')));
         });
 
+        $server->on('error', function (Throwable $exception) {
+            echo $exception->getMessage() . PHP_EOL;
+        });
+
         $server->listen($socket);
 
         $this->info('Please follow the instructions in the browser...');
 
-        if ($this->option('console-only') || strncasecmp(PHP_OS, 'WIN', 3) !== 0) {
+        if ($this->option('console-only')) {
             $this->info($authorizeUrl);
-        } else {
+        } elseif (strncasecmp(PHP_OS, 'WIN', 3) === 0) {
             shell_exec(sprintf('start "" "%s"', $authorizeUrl));
+        } else {
+            shell_exec(sprintf('xdg-open "%s"', $authorizeUrl));
         }
 
         $loop->run();

@@ -163,15 +163,21 @@ class Build
             $revision
         );
 
-        $this->command->info(sprintf('Tagging docker image as %s', $this->latestImageName));
+        $this->command->info(sprintf('Build docker image as %s', $this->latestImageName));
+
+        // write Dockerfile from phar to the current working directory
+        file_put_contents(
+            $dockerfile = sprintf('%s/Dockerfile', $this->getCurrentWorkingDirectory()),
+            file_get_contents(base_path('resources/build/container/Dockerfile'))
+        );
 
         $command = array_merge([
             'docker', 'build',
-            '-f', base_path('resources/build/container/Dockerfile'),
+            '-f', $dockerfile,
             '-t', $this->latestImageName, '.',
         ], $this->getBuildArgs());
 
-        $process = new Process($command, $this->cwd . DIRECTORY_SEPARATOR . '.maid/build');
+        $process = new Process($command, $this->getCurrentWorkingDirectory());
         $process->setTimeout(null);
         $process->run(function ($type, $buffer) {
             $this->command->getOutput()->write($buffer);
@@ -224,5 +230,10 @@ class Build
     private function getNamespace(): string
     {
         return Manifest::get('project');
+    }
+
+    private function getCurrentWorkingDirectory(): string
+    {
+        return $this->cwd . DIRECTORY_SEPARATOR . '.maid/build';
     }
 }

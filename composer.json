@@ -24,9 +24,9 @@
     "require-dev": {
         "composer/composer": "^2.0",
         "ghostzero/maid-sdk": "dev-master",
-        "guzzlehttp/guzzle": "^7.0",
+        "guzzlehttp/guzzle": "^7.4",
         "jolicode/jolinotif": "^2.2",
-        "laravel-zero/framework": "^8.9",
+        "laravel-zero/framework": "^9.0",
         "mbaynton/launch-cli-editor": "^1.0",
         "mockery/mockery": "^1.4.2",
         "padraic/phar-updater": "^1.0.6",
