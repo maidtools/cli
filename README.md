@@ -1,4 +1,4 @@
-![](https://cdn.maid.sh/ghostzero/maid-banner-v2.png)
+![](https://cdn.maid.sh/ghostzero/maid-banner-v3.png)
 
 # Make Development Faster
 
