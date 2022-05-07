@@ -138,6 +138,8 @@ The following is an example of a project where the `positive-mite-zem35d.maid.bu
 maid record example.com CNAME foo another-example.com
 ```
 
+> Subdomains starting with `*.ingress` are currently reserved for the Ingress Controller and cannot be created, edited or deleted.
+
 ### List DNS Records
 
 ```shell
