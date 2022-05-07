@@ -18,7 +18,7 @@ class CacheDeleteCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'cache:delete {id}';
+    protected $signature = 'cache:delete {cache}';
 
     /**
      * The description of the command.
@@ -35,7 +35,7 @@ class CacheDeleteCommand extends Command
     {
         $result = $maid
             ->withUserAccessToken()
-            ->deleteCache($this->argument('id'));
+            ->deleteCache($this->argument('cache'));
 
         if ($result->success()) {
             $this->info('Cache deletion initiated successfully.');

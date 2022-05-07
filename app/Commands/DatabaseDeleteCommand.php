@@ -18,7 +18,7 @@ class DatabaseDeleteCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'database:delete {id}';
+    protected $signature = 'database:delete {database}';
 
     /**
      * The description of the command.
@@ -35,7 +35,7 @@ class DatabaseDeleteCommand extends Command
     {
         $result = $maid
             ->withUserAccessToken()
-            ->deleteDatabase($this->argument('id'));
+            ->deleteDatabase($this->argument('database'));
 
         if ($result->success()) {
             $this->info('Database deletion initiated successfully.');
