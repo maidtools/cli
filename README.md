@@ -112,6 +112,8 @@ The following commands are used to create DNS zones:
 maid domain example.com
 ```
 
+> After creating the DNS zone, the domain must be changed to the nameservers `ns1.bitinflow.com` and `ns2.bitinflow.com`. If you want to continue to use your own DNS server, then you must add all DNS records from `records:list` (which could change over time).
+
 ### List DNS Zones
 
 The following commands are used to list DNS zones:
