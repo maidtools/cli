@@ -1,5 +1,12 @@
 ![](https://cdn.maid.sh/ghostzero/maid-banner-v3.png)
 
+<p align="center">
+  <a href="https://packagist.org/packages/ghostzero/maid"><img src="https://img.shields.io/packagist/dt/ghostzero/maid" alt="Total Downloads"></a>
+  <a href="https://packagist.org/packages/ghostzero/maid"><img src="https://img.shields.io/packagist/v/ghostzero/maid" alt="Latest Stable Version"></a>
+  <a href="https://packagist.org/packages/ghostzero/maid"><img src="https://img.shields.io/packagist/l/ghostzero/maid" alt="License"></a>
+  <a href="https://ghostzero.dev/discord"><img src="https://discordapp.com/api/guilds/590942233126240261/embed.png?style=shield" alt="Discord"></a>
+</p>
+
 # Make Development Faster
 
 Maid is a **containerized deployment platform** for Laravel, powered by Kubernetes. From simple to complex apps, launch your Laravel application on [maid.sh](https://maid.sh), enjoy the simplicity and focus on innovating and shipping value.
