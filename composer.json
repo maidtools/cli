@@ -23,7 +23,7 @@
     },
     "require-dev": {
         "composer/composer": "^2.0",
-        "ghostzero/maid-sdk": "dev-master",
+        "ghostzero/maid-sdk": "dev-main",
         "guzzlehttp/guzzle": "^7.4",
         "jolicode/jolinotif": "^2.2",
         "laravel-zero/framework": "^9.0",
@@ -35,12 +35,6 @@
         "symfony/yaml": "^6.0",
         "vlucas/phpdotenv": "^5.4"
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../maid-sdk"
-        }
-    ],
     "scripts": {
         "build": "make build"
     },
