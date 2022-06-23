@@ -50,7 +50,7 @@ class InitCommand extends Command
         $this->newLine();
         $this->info(' Which cluster do you want to use?');
         foreach ($clusters as $id => $cluster) {
-            $this->info(sprintf(' <fg=white>> [%s] %s</> (%s, ID: %s)', $id, $cluster->context, $cluster->provider, $cluster->id));
+            $this->info(sprintf(' <fg=white>> [%s] %s</> (%s, ID: %s)', $id, $cluster->name, $cluster->engine, $cluster->id));
         }
 
         $this->newLine();
@@ -58,7 +58,7 @@ class InitCommand extends Command
         $this->newLine();
 
         do {
-            $clusterId = $this->anticipate('Please enter the cluster name', $clusters->keys()->toArray());
+            $clusterId = $this->anticipate('Please enter the cluster id', $clusters->keys()->toArray());
         } while (!in_array($clusterId, $clusters->keys()->toArray()));
 
         $this->warn('Now I need some information about your deployment...');
