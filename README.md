@@ -1,5 +1,12 @@
 ![](https://cdn.maid.sh/ghostzero/maid-banner-v3.png)
 
+<p align="center">
+  <a href="https://packagist.org/packages/ghostzero/maid"><img src="https://img.shields.io/packagist/dt/ghostzero/maid" alt="Total Downloads"></a>
+  <a href="https://packagist.org/packages/ghostzero/maid"><img src="https://img.shields.io/packagist/v/ghostzero/maid" alt="Latest Stable Version"></a>
+  <a href="https://packagist.org/packages/ghostzero/maid"><img src="https://img.shields.io/packagist/l/ghostzero/maid" alt="License"></a>
+  <a href="https://ghostzero.dev/discord"><img src="https://discordapp.com/api/guilds/590942233126240261/embed.png?style=shield" alt="Discord"></a>
+</p>
+
 # Make Development Faster
 
 Maid is a **containerized deployment platform** for Laravel, powered by Kubernetes. From simple to complex apps, launch your Laravel application on [maid.sh](https://maid.sh), enjoy the simplicity and focus on innovating and shipping value.
@@ -138,6 +145,8 @@ The following commands are used to create DNS zones:
 maid domain example.com
 ```
 
+> After creating the DNS zone, the domain must be changed to the nameservers `ns1.bitinflow.com` and `ns2.bitinflow.com`. If you want to continue to use your own DNS server, then you must add all DNS records from `record:list` (which could change over time).
+
 ### List DNS Zones
 
 The following commands are used to list DNS zones:
@@ -163,6 +172,8 @@ The following is an example of a project where the `positive-mite-zem35d.maid.bu
 ```shell
 maid record example.com CNAME foo another-example.com
 ```
+
+> Subdomains starting with `*.ingress` are currently reserved for the Ingress Controller and cannot be created, edited or deleted.
 
 ### List DNS Records
 
