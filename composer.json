@@ -1,5 +1,5 @@
 {
-    "name": "ghostzero/maid",
+    "name": "maid/cli",
     "description": "Cleanup tool for vendor and node_modules directories.",
     "keywords": [
         "maid",
