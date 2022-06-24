@@ -1,9 +1,9 @@
 ![](https://cdn.maid.sh/ghostzero/maid-banner-v3.png)
 
 <p align="center">
-  <a href="https://packagist.org/packages/ghostzero/maid"><img src="https://img.shields.io/packagist/dt/ghostzero/maid" alt="Total Downloads"></a>
-  <a href="https://packagist.org/packages/ghostzero/maid"><img src="https://img.shields.io/packagist/v/ghostzero/maid" alt="Latest Stable Version"></a>
-  <a href="https://packagist.org/packages/ghostzero/maid"><img src="https://img.shields.io/packagist/l/ghostzero/maid" alt="License"></a>
+  <a href="https://packagist.org/packages/maidtools/maid"><img src="https://img.shields.io/packagist/dt/maidtools/maid" alt="Total Downloads"></a>
+  <a href="https://packagist.org/packages/maidtools/maid"><img src="https://img.shields.io/packagist/v/maidtools/maid" alt="Latest Stable Version"></a>
+  <a href="https://packagist.org/packages/maidtools/maid"><img src="https://img.shields.io/packagist/l/maidtools/maid" alt="License"></a>
   <a href="https://ghostzero.dev/discord"><img src="https://discordapp.com/api/guilds/590942233126240261/embed.png?style=shield" alt="Discord"></a>
 </p>
 
@@ -20,13 +20,13 @@ Maid is a **containerized deployment platform** for Laravel, powered by Kubernet
 Most likely you want to install maid as a global command, this can be done with Composer using the following command:
 
 ```shell
-composer global require ghostzero/maid
+composer global require maid/maid
 ```
 
 To upgrade maid, simply use the following command:
 
 ```shell
-composer global update ghostzero/maid
+composer global update maid/maid
 ```
 
 ## Logging In
