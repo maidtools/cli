@@ -23,7 +23,7 @@
     },
     "require-dev": {
         "composer/composer": "^2.0",
-        "ghostzero/maid-sdk": "dev-main",
+        "maid/sdk": "dev-main",
         "guzzlehttp/guzzle": "^7.4",
         "jolicode/jolinotif": "^2.2",
         "laravel-zero/framework": "^9.0",

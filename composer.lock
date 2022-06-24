@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "38cbab1c7a7fdd2612dd2267357d026b",
+    "content-hash": "54e2b0d60aba14a51fadd89d544daed0",
     "packages": [],
     "packages-dev": [
         {
@@ -1125,55 +1125,6 @@
                 "source": "https://github.com/firebase/php-jwt/tree/v5.5.1"
             },
             "time": "2021-11-08T20:18:51+00:00"
-        },
-        {
-            "name": "ghostzero/maid-sdk",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ghostzero/maid-sdk.git",
-                "reference": "fade3480e8a6e56d2d34081637c48f61d69fe9f0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ghostzero/maid-sdk/zipball/fade3480e8a6e56d2d34081637c48f61d69fe9f0",
-                "reference": "fade3480e8a6e56d2d34081637c48f61d69fe9f0",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "firebase/php-jwt": "^5.2",
-                "guzzlehttp/guzzle": "^6.3|^7.0",
-                "illuminate/support": "^6.0|^7.0|^8.0|^9.0",
-                "php": "^8.0",
-                "symfony/yaml": "^6.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^9.0"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "GhostZero\\Maid\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "René Preuß",
-                    "email": "rene@preuss.io"
-                }
-            ],
-            "description": "Official SDK for maid.sh",
-            "support": {
-                "issues": "https://github.com/ghostzero/maid-sdk/issues",
-                "source": "https://github.com/ghostzero/maid-sdk/tree/main"
-            },
-            "time": "2022-06-23T10:11:42+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -2791,6 +2742,55 @@
                 }
             ],
             "time": "2022-04-17T13:12:02+00:00"
+        },
+        {
+            "name": "maid/sdk",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/maidtools/sdk.git",
+                "reference": "8ab0f8459d91945fd3075c734f350ad2ccc54530"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/maidtools/sdk/zipball/8ab0f8459d91945fd3075c734f350ad2ccc54530",
+                "reference": "8ab0f8459d91945fd3075c734f350ad2ccc54530",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "firebase/php-jwt": "^5.2",
+                "guzzlehttp/guzzle": "^6.3|^7.0",
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0",
+                "php": "^8.0",
+                "symfony/yaml": "^6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GhostZero\\Maid\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "René Preuß",
+                    "email": "rene@preuss.io"
+                }
+            ],
+            "description": "Official SDK for maid.sh",
+            "support": {
+                "issues": "https://github.com/maidtools/sdk/issues",
+                "source": "https://github.com/maidtools/sdk/tree/main"
+            },
+            "time": "2022-06-24T10:23:35+00:00"
         },
         {
             "name": "mbaynton/launch-cli-editor",
@@ -8756,7 +8756,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "ghostzero/maid-sdk": 20
+        "maid/sdk": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
@@ -8767,5 +8767,5 @@
         "ext-sodium": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.1.0"
 }
