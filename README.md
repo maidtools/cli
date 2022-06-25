@@ -20,13 +20,13 @@ Maid is a **containerized deployment platform** for Laravel, powered by Kubernet
 Most likely you want to install maid as a global command, this can be done with Composer using the following command:
 
 ```shell
-composer global require ghostzero/maid
+composer global require maid/maid
 ```
 
 To upgrade maid, simply use the following command:
 
 ```shell
-composer global update ghostzero/maid
+composer global update maid/maid
 ```
 
 ## Logging In
