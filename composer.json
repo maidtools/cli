@@ -1,6 +1,6 @@
 {
     "name": "maid/maid",
-    "description": "Cleanup tool for vendor and node_modules directories.",
+    "description": "Maid is a containerized deployment platform for Laravel",
     "keywords": [
         "maid",
         "composer",

@@ -9,6 +9,10 @@ class UserAccessToken
 {
     public function getAccessToken(): ?string
     {
+        if (env('MAID_ACCESS_TOKEN')) {
+            return env('MAID_ACCESS_TOKEN');
+        }
+
         if (!Storage::exists('credentials.json')) {
             return null;
         }
