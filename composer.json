@@ -19,7 +19,9 @@
         "php": "^8.0",
         "ext-json": "*",
         "ext-openssl": "*",
-        "ext-sodium": "*",
+        "ext-sodium": "*"
+    },
+    "require-dev": {
         "composer/composer": "^2.0",
         "maid/sdk": "dev-main",
         "guzzlehttp/guzzle": "^7.4",
@@ -57,6 +59,6 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "bin": [
-        "maid"
+        "builds/maid"
     ]
 }
