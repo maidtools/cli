@@ -28,4 +28,4 @@ update:
 .PHONY: install
 install:
 	@echo "Installing develop globally..."
-	composer global require ghostzero/maid:dev-master --ansi
+	composer global require maid/maid:dev-master --ansi
