@@ -26,7 +26,7 @@ class Build
     /**
      * @throws Exception
      */
-    public function build()
+    public function build(): void
     {
         $start = microtime(true);
 
@@ -140,7 +140,7 @@ class Build
 
             $process = Process::fromShellCommandline($command, $this->cwd . DIRECTORY_SEPARATOR . '.maid/build');
             $process->setTimeout(null);
-            $process->run(function ($type, $buffer) {
+            $process->mustRun(function ($type, $buffer) {
                 $this->command->getOutput()->write($buffer);
             });
         }
@@ -149,7 +149,7 @@ class Build
     /**
      * @throws Exception
      */
-    private function buildDockerImage()
+    private function buildDockerImage(): void
     {
         $environment = $this->command->argument('environment');
         $manifest = Manifest::get();
@@ -179,7 +179,7 @@ class Build
 
         $process = new Process($command, $this->getCurrentWorkingDirectory());
         $process->setTimeout(null);
-        $process->run(function ($type, $buffer) {
+        $process->mustRun(function ($type, $buffer) {
             $this->command->getOutput()->write($buffer);
         });
     }
@@ -201,7 +201,7 @@ class Build
         return $args;
     }
 
-    private function pushDockerImage()
+    private function pushDockerImage(): void
     {
         // docker login bpkg.io -u $REGISTRY_USER -p $REGISTRY_PASS
         $loginProcess = new Process([
@@ -209,7 +209,7 @@ class Build
             '-u', $this->getNamespace(),
             '-p', 'tpt8bBaWV8kkfdnPAn7E45vqEK6sXyhb',
         ]);
-        $loginProcess->run(function ($type, $buffer) {
+        $loginProcess->mustRun(function ($type, $buffer) {
             $this->command->getOutput()->write($buffer);
         });
 
@@ -217,7 +217,7 @@ class Build
             'docker', 'push', $this->latestImageName
         ]);
         $pushProcess->setTimeout(null);
-        $pushProcess->run(function ($type, $buffer) {
+        $pushProcess->mustRun(function ($type, $buffer) {
             $this->command->getOutput()->write($buffer);
         });
     }

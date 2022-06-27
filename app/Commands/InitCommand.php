@@ -50,7 +50,7 @@ class InitCommand extends Command
         $this->newLine();
         $this->info(' Which cluster do you want to use?');
         foreach ($clusters as $id => $cluster) {
-            $this->info(sprintf(' <fg=white>> [%s] %s</> (%s, ID: %s)', $id, $cluster->name, $cluster->engine, $cluster->id));
+            $this->info(sprintf(' <fg=white>> [%s] %s</> (%s)', $id, $cluster->name, $cluster->engine));
         }
 
         $this->newLine();
