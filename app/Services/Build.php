@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Exception;
 use FilesystemIterator;
-use GhostZero\Maid\Support\Manifest;
+use Maid\Sdk\Support\Manifest;
 use Illuminate\Support\Str;
 use LaravelZero\Framework\Commands\Command;
 use RecursiveDirectoryIterator;

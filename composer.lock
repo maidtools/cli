@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "54e2b0d60aba14a51fadd89d544daed0",
+    "content-hash": "753a3a3bbabaf18401c2b604e0ad7986",
     "packages": [],
     "packages-dev": [
         {
@@ -2746,16 +2746,10 @@
         {
             "name": "maid/sdk",
             "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/maidtools/sdk.git",
-                "reference": "8ab0f8459d91945fd3075c734f350ad2ccc54530"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/maidtools/sdk/zipball/8ab0f8459d91945fd3075c734f350ad2ccc54530",
-                "reference": "8ab0f8459d91945fd3075c734f350ad2ccc54530",
-                "shasum": ""
+                "type": "path",
+                "url": "../maid-sdk",
+                "reference": "5bf8bf96253b4cd2b2885895ed3723700b09ca4b"
             },
             "require": {
                 "ext-json": "*",
@@ -2768,14 +2762,17 @@
             "require-dev": {
                 "phpunit/phpunit": "^9.0"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "GhostZero\\Maid\\": "src/"
+                    "Maid\\Sdk\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Maid\\Sdk\\Tests\\": "tests/"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -2786,11 +2783,9 @@
                 }
             ],
             "description": "Official SDK for maid.sh",
-            "support": {
-                "issues": "https://github.com/maidtools/sdk/issues",
-                "source": "https://github.com/maidtools/sdk/tree/main"
-            },
-            "time": "2022-06-24T10:23:35+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "mbaynton/launch-cli-editor",

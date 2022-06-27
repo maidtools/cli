@@ -5,11 +5,10 @@ namespace App\Commands;
 use App\Traits\InteractsWithMaidApi;
 use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
 use Maid\Sdk\Maid;
-use Maid\Sdk\Support\Manifest;
 use GuzzleHttp\Exception\GuzzleException;
 use LaravelZero\Framework\Commands\Command;
 
-class EnvDeleteCommand extends Command
+class ClusterListCommand extends Command
 {
     use InteractsWithMaidApi;
 
@@ -18,14 +17,15 @@ class EnvDeleteCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'env:delete {environment=production}';
+    protected $signature = 'cluster:list
+                            {--fields=id,name,context,engine,ingress_controller,cloud_provider_id,project_id,user_id : Fields to select}';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Delete an environment';
+    protected $description = 'List the clusters that belong to the current user';
 
     /**
      * @throws RequestRequiresClientIdException
@@ -33,18 +33,16 @@ class EnvDeleteCommand extends Command
      */
     public function handle(Maid $maid): int
     {
-        $manifest = Manifest::get();
-
         $result = $maid
             ->withUserAccessToken()
-            ->flushEnvironmentVariables($manifest['project'], $this->argument('environment'));
+            ->getClusters();
 
         if ($result->success()) {
-            $this->info('Environment has been flushed.');
+            $this->resultAsTable($result, $this);
 
             return self::SUCCESS;
         }
 
-        return $this->failure($result, 'Environment cannot be flushed.');
+        return $this->failure($result, 'Cannot list the clusters that belong to the current user.');
     }
 }

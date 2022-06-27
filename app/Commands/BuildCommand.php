@@ -22,13 +22,14 @@ class BuildCommand extends Command
             $build = new Build(getcwd(), $this);
             $build->build();
         } catch (ProcessFailedException $exception) {
-            $error = sprintf("The command \"%s\" failed.\n\nExit Code: %s (%s)\n\nWorking directory: %s",
+            $error = sprintf("The previous command \"%s\" failed.\n\nExit Code: %s (%s)\n\nWorking directory: %s",
                 $exception->getProcess()->getCommandLine(),
                 $exception->getProcess()->getExitCode(),
                 $exception->getProcess()->getExitCodeText(),
                 $exception->getProcess()->getWorkingDirectory()
             );
 
+            $this->newLine();
             $this->error($error);
 
             return self::FAILURE;

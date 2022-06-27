@@ -3,8 +3,8 @@
 namespace App\Commands;
 
 use App\Traits\InteractsWithMaidApi;
-use GhostZero\Maid\Exceptions\RequestRequiresClientIdException;
-use GhostZero\Maid\Maid;
+use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
+use Maid\Sdk\Maid;
 use GuzzleHttp\Exception\GuzzleException;
 use LaravelZero\Framework\Commands\Command;
 

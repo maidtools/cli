@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use GhostZero\Maid\Result;
+use Maid\Sdk\Result;
 use LaravelZero\Framework\Commands\Command;
 use stdClass;
 use Symfony\Component\Console\Helper\TableCell;

@@ -2,7 +2,7 @@
 
 namespace App\Commands;
 
-use GhostZero\Maid\Maid;
+use Maid\Sdk\Maid;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;

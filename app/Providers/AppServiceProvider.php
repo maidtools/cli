@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use App\Repositories\UserAccessToken;
-use GhostZero\Maid\Contracts\UserTokenRepository;
-use GhostZero\Maid\Maid;
+use Maid\Sdk\Contracts\UserTokenRepository;
+use Maid\Sdk\Maid;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

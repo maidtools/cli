@@ -3,7 +3,7 @@
 namespace App\Commands;
 
 use Exception;
-use GhostZero\Maid\Support\Manifest;
+use Maid\Sdk\Support\Manifest;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\ArrayShape;
 use LaravelZero\Framework\Commands\Command;

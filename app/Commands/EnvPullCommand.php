@@ -2,9 +2,9 @@
 
 namespace App\Commands;
 
-use GhostZero\Maid\Exceptions\RequestRequiresClientIdException;
-use GhostZero\Maid\Maid;
-use GhostZero\Maid\Support\Manifest;
+use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
+use Maid\Sdk\Maid;
+use Maid\Sdk\Support\Manifest;
 use GuzzleHttp\Exception\GuzzleException;
 use LaravelZero\Framework\Commands\Command;
 
