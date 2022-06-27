@@ -5,6 +5,7 @@ namespace App\Commands;
 use App\Services\Build;
 use Exception;
 use LaravelZero\Framework\Commands\Command;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class BuildCommand extends Command
 {
@@ -20,6 +21,17 @@ class BuildCommand extends Command
         try {
             $build = new Build(getcwd(), $this);
             $build->build();
+        } catch (ProcessFailedException $exception) {
+            $error = sprintf("The command \"%s\" failed.\n\nExit Code: %s (%s)\n\nWorking directory: %s",
+                $exception->getProcess()->getCommandLine(),
+                $exception->getProcess()->getExitCode(),
+                $exception->getProcess()->getExitCodeText(),
+                $exception->getProcess()->getWorkingDirectory()
+            );
+
+            $this->error($error);
+
+            return self::FAILURE;
         } catch (Exception $e) {
             $this->error($e->getMessage());
 
