@@ -9,6 +9,6 @@ if (!function_exists('maid_cli_path')) {
             $result = getenv('HOME') . DIRECTORY_SEPARATOR . '.config';
         }
 
-        return $result . DIRECTORY_SEPARATOR . 'maid-cli';
+        return $result . DIRECTORY_SEPARATOR . 'maid';
     }
 }

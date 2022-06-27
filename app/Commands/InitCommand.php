@@ -39,8 +39,8 @@ class InitCommand extends Command
         $this->warn(sprintf('You are currently using the following version: %s', App::version()));
         $this->newLine();
         $this->warn('Discord: https://ghostzero.dev/discord');
-        $this->warn('GitHub: https://github.com/ghostzero/maid');
-        $this->warn('Issues: https://github.com/ghostzero/maid/issues');
+        $this->warn('GitHub: https://github.com/maidtools/maid');
+        $this->warn('Issues: https://github.com/maidtools/maid/issues');
 
         $this->newLine();
         $this->warn('Before we start, please select your Kubernetes cluster...');

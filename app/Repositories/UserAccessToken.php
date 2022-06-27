@@ -9,7 +9,6 @@ class UserAccessToken
 {
     public function getAccessToken(): ?string
     {
-        dump('check env', env('MAID_ACCESS_TOKEN'));
         if (env('MAID_ACCESS_TOKEN')) {
             return env('MAID_ACCESS_TOKEN');
         }
