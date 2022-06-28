@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use Maid\Sdk\Result;
 use LaravelZero\Framework\Commands\Command;
+use Maid\Sdk\Result;
 use stdClass;
 use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Helper\TableCellStyle;
@@ -13,7 +13,7 @@ use Symfony\Component\Console\Helper\TableCellStyle;
  */
 trait InteractsWithMaidApi
 {
-    protected function resultAsTable(Result $result, Command $command)
+    protected function resultAsTable(Result $result, Command $command): void
     {
         $attributes = explode(',', $command->option('fields'));
         $rows = array_map(
@@ -50,18 +50,26 @@ trait InteractsWithMaidApi
         match ($result->status) {
             422 => $this->render422Error($result->data()),
             401, 403, 404, 409 => $this->renderGenericError($result->data()),
+            500 => $this->render500Error($result->data()),
             default => $result->dump(),
         };
 
         return self::FAILURE;
     }
 
-    protected function renderGenericError(stdClass $data)
+    protected function render500Error(stdClass $data): void
+    {
+        $this->warn($data->message);
+        if (isset($data->exception)) $this->warn($data->exception);
+        if (isset($data->file)) $this->warn(sprintf('%s:%s', $data->file, $data->line));
+    }
+
+    protected function renderGenericError(stdClass $data): void
     {
         $this->warn($data->message);
     }
 
-    protected function render422Error(stdClass $data)
+    protected function render422Error(stdClass $data): void
     {
         $this->warn($data->message);
         $rows = [];
