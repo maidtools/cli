@@ -36,7 +36,7 @@ class Filesystem
         );
 
         foreach ($files as $file) {
-            $todo = ($file->isDir() ? 'rmdir' : 'unlink');
+            $todo = $file->isDir() ? 'rmdir' : 'unlink';
             $todo($file->getRealPath());
         }
 
