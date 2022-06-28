@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Support\Filesystem;
 use Exception;
 use FilesystemIterator;
 use Maid\Sdk\Support\Manifest;
@@ -81,7 +82,7 @@ class Build
     private function copyDirectory(string $source, string $target): void
     {
         if (is_dir($target)) {
-            $this->deleteDirectory($target);
+            Filesystem::deleteDirectory($target);
         }
 
         mkdir($target, 0777, true);
@@ -108,22 +109,7 @@ class Build
 
     private function cleanupBuildDirectory(): void
     {
-        $this->deleteDirectory($this->cwd . DIRECTORY_SEPARATOR . '.maid');
-    }
-
-    private function deleteDirectory(string $target): void
-    {
-        $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($target, FilesystemIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::CHILD_FIRST
-        );
-
-        foreach ($files as $file) {
-            $todo = ($file->isDir() ? 'rmdir' : 'unlink');
-            $todo($file->getRealPath());
-        }
-
-        rmdir($target);
+        Filesystem::deleteDirectory($this->cwd . DIRECTORY_SEPARATOR . '.maid');
     }
 
     /**
