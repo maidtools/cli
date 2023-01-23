@@ -5,9 +5,9 @@ namespace App\Services;
 use App\Support\Filesystem;
 use Exception;
 use FilesystemIterator;
-use Maid\Sdk\Support\Manifest;
 use Illuminate\Support\Str;
 use LaravelZero\Framework\Commands\Command;
+use Maid\Sdk\Support\Manifest;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Symfony\Component\Process\Process;
@@ -43,8 +43,10 @@ class Build
         $this->command->info('Building docker image...');
         $this->buildDockerImage();
 
-        $this->command->info('Push docker image...');
-        $this->pushDockerImage();
+        if (!$this->command->option('no-push')) {
+            $this->command->info('Push docker image...');
+            $this->pushDockerImage();
+        }
 
         $this->command->info('Cleanup build files...');
         $this->cleanupBuildDirectory();
@@ -60,6 +62,10 @@ class Build
     {
         $environment = $this->command->argument('environment');
         $manifest = Manifest::get();
+
+        if (!isset($manifest['project'])) {
+            throw new Exception('The manifest file must contain a project.');
+        }
 
         if (!isset($manifest['name'])) {
             throw new Exception('The manifest file must contain a name.');
@@ -107,7 +113,7 @@ class Build
         }
     }
 
-    private function cleanupBuildDirectory(): void
+    public function cleanupBuildDirectory(): void
     {
         Filesystem::deleteDirectory($this->cwd . DIRECTORY_SEPARATOR . '.maid');
     }
