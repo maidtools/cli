@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Exceptions\LoginRequiredException;
 use App\Traits\InteractsWithMaidApi;
 use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
 use Maid\Sdk\Maid;
@@ -36,16 +37,20 @@ class ClusterImportCommand extends Command
      */
     public function handle(Maid $maid): int
     {
-        $result = $maid
-            ->withUserAccessToken()
-            ->importCluster([
-                'provider' => $this->argument('provider'),
-                'name' => $this->argument('name'),
-                'api_key' => $this->option('api-key'),
-                'ingress_controller' => $this->option('ingress-controller'),
-                'install_or_upgrade' => $this->option('allow-install-or-upgrade'),
-                'kubeconfig' => $this->getFileContents($this->option('kubeconfig')),
-            ]);
+        try {
+            $result = $maid
+                ->withUserAccessToken()
+                ->importCluster([
+                    'provider' => $this->argument('provider'),
+                    'name' => $this->argument('name'),
+                    'api_key' => $this->option('api-key'),
+                    'ingress_controller' => $this->option('ingress-controller'),
+                    'install_or_upgrade' => $this->option('allow-install-or-upgrade'),
+                    'kubeconfig' => $this->getFileContents($this->option('kubeconfig')),
+                ]);
+        } catch (LoginRequiredException $e) {
+            return $this->loginRequired($e);
+        }
 
 
         $result->dump();

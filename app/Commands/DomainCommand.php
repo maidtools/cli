@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Exceptions\LoginRequiredException;
 use App\Traits\InteractsWithMaidApi;
 use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
 use Maid\Sdk\Maid;
@@ -35,13 +36,15 @@ class DomainCommand extends Command
     {
         $manifest = Manifest::get();
 
-        $result = $maid
-            ->withUserAccessToken()
-            ->createDomain($manifest['project'], [
-                'name' => $this->argument('domain'),
-            ]);
-
-        $result->dump();
+        try {
+            $result = $maid
+                ->withUserAccessToken()
+                ->createDomain($manifest['project'], [
+                    'name' => $this->argument('domain'),
+                ]);
+        } catch (LoginRequiredException $e) {
+            return $this->loginRequired($e);
+        }
 
         if ($result->success()) {
             $this->info('Domain creation initiated successfully.');

@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Exceptions\LoginRequiredException;
 use App\Traits\InteractsWithMaidApi;
 use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
 use Maid\Sdk\Maid;
@@ -32,13 +33,17 @@ class RecordDeleteCommand extends Command
      */
     public function handle(Maid $maid): int
     {
-        $result = $maid
-            ->withUserAccessToken()
-            ->deleteDomainRecord(
-                $this->argument('domain'),
-                $this->argument('type'),
-                $this->argument('name')
-            );
+        try {
+            $result = $maid
+                ->withUserAccessToken()
+                ->deleteDomainRecord(
+                    $this->argument('domain'),
+                    $this->argument('type'),
+                    $this->argument('name')
+                );
+        } catch (LoginRequiredException $e) {
+            return $this->loginRequired($e);
+        }
 
         if ($result->success()) {
             $this->info('Domain record deletion initiated successfully.');

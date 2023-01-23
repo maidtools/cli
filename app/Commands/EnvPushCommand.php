@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Exceptions\LoginRequiredException;
 use App\Traits\InteractsWithMaidApi;
 use Dotenv\Dotenv;
 use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
@@ -40,15 +41,19 @@ class EnvPushCommand extends Command
 
         $variables = Dotenv::parse(file_get_contents($filename));
 
-        $result = $maid
-            ->withUserAccessToken()
-            ->setEnvironmentVariables($manifest['project'], array_map(function (string $value, string $key) {
-                return [
-                    'environment' => $this->argument('environment'),
-                    'key' => strtoupper($key),
-                    'value' => $value,
-                ];
-            }, $variables, array_keys($variables)));
+        try {
+            $result = $maid
+                ->withUserAccessToken()
+                ->setEnvironmentVariables($manifest['project'], array_map(function (string $value, string $key) {
+                    return [
+                        'environment' => $this->argument('environment'),
+                        'key' => strtoupper($key),
+                        'value' => $value,
+                    ];
+                }, $variables, array_keys($variables)));
+        } catch (LoginRequiredException $e) {
+            return $this->loginRequired($e);
+        }
 
         if ($result->success()) {
             $this->info('Environment has been uploaded.');

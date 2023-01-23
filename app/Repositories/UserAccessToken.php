@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Exceptions\LoginRequiredException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
@@ -14,13 +15,13 @@ class UserAccessToken
         }
 
         if (!Storage::exists('credentials.json')) {
-            return null;
+            throw LoginRequiredException::fromMissingCredentialsFile();
         }
 
         $credentials = json_decode(Storage::get('credentials.json'));
 
         if (Carbon::parse($credentials->expires_at)->isPast()) {
-            return null;
+            throw LoginRequiredException::fromExpiredToken();
         }
 
         return $credentials->access_token;

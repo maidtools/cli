@@ -2,10 +2,10 @@
 
 namespace App\Commands;
 
+use App\Exceptions\LoginRequiredException;
 use App\Traits\InteractsWithMaidApi;
 use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
 use Maid\Sdk\Maid;
-use Maid\Sdk\Support\Manifest;
 use GuzzleHttp\Exception\GuzzleException;
 use LaravelZero\Framework\Commands\Command;
 
@@ -35,14 +35,18 @@ class RecordCommand extends Command
      */
     public function handle(Maid $maid): int
     {
-        $result = $maid
-            ->withUserAccessToken()
-            ->createDomainRecord($this->argument('domain'), [
-                'name' => $this->argument('name'),
-                'type' => $this->argument('type'),
-                'content' => $this->argument('content'),
-                'ttl' => $this->option('ttl'),
-            ]);
+        try {
+            $result = $maid
+                ->withUserAccessToken()
+                ->createDomainRecord($this->argument('domain'), [
+                    'name' => $this->argument('name'),
+                    'type' => $this->argument('type'),
+                    'content' => $this->argument('content'),
+                    'ttl' => $this->option('ttl'),
+                ]);
+        } catch (LoginRequiredException $e) {
+            return $this->loginRequired($e);
+        }
 
         if ($result->success()) {
             $this->info('Domain record creation initiated successfully.');

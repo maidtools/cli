@@ -2,12 +2,13 @@
 
 namespace App\Commands;
 
+use App\Exceptions\LoginRequiredException;
 use App\Traits\InteractsWithMaidApi;
+use GuzzleHttp\Exception\GuzzleException;
+use LaravelZero\Framework\Commands\Command;
 use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
 use Maid\Sdk\Maid;
 use Maid\Sdk\Support\Manifest;
-use GuzzleHttp\Exception\GuzzleException;
-use LaravelZero\Framework\Commands\Command;
 
 class RollbackCommand extends Command
 {
@@ -36,22 +37,22 @@ class RollbackCommand extends Command
 
         $this->info('Rolling back to previous version...');
 
+        try {
+            $api = $maid->withUserAccessToken();
+        } catch (LoginRequiredException $e) {
+            return $this->loginRequired($e);
+        }
+
         if ($this->option('id')) {
-            $result = $maid
-                ->withUserAccessToken()
-                ->rollbackDeployment(
-                    $manifest['project'],
-                    $this->option('id'),
-                );
+            $result = $api->rollbackDeployment(
+                $manifest['project'],
+                $this->option('id'),
+            );
         } else {
-            $result = $maid
-                ->withUserAccessToken()
-                ->rollbackLatestDeployment(
-                    $manifest['project'],
-                    [
-                        'environment' => $this->option('environment'),
-                    ]
-                );
+            $result = $api->rollbackLatestDeployment(
+                $manifest['project'],
+                ['environment' => $this->option('environment')],
+            );
         }
 
         if ($result->success()) {
