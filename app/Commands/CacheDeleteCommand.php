@@ -2,10 +2,10 @@
 
 namespace App\Commands;
 
+use App\Exceptions\LoginRequiredException;
 use App\Traits\InteractsWithMaidApi;
 use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
 use Maid\Sdk\Maid;
-use Maid\Sdk\Support\Manifest;
 use GuzzleHttp\Exception\GuzzleException;
 use LaravelZero\Framework\Commands\Command;
 
@@ -33,9 +33,13 @@ class CacheDeleteCommand extends Command
      */
     public function handle(Maid $maid): int
     {
-        $result = $maid
-            ->withUserAccessToken()
-            ->deleteCache($this->argument('cache'));
+        try {
+            $result = $maid
+                ->withUserAccessToken()
+                ->deleteCache($this->argument('cache'));
+        } catch (LoginRequiredException $e) {
+            return $this->loginRequired($e);
+        }
 
         if ($result->success()) {
             $this->info('Cache deletion initiated successfully.');

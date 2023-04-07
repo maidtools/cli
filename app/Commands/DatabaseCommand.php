@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Exceptions\LoginRequiredException;
 use App\Traits\InteractsWithMaidApi;
 use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
 use Maid\Sdk\Maid;
@@ -37,13 +38,17 @@ class DatabaseCommand extends Command
     {
         $manifest = Manifest::get();
 
-        $result = $maid
-            ->withUserAccessToken()
-            ->createDatabase($manifest['project'], [
-                'name' => $this->argument('name'),
-                'engine' => $this->option('engine'),
-                'node' => $this->option('node'),
-            ]);
+        try {
+            $result = $maid
+                ->withUserAccessToken()
+                ->createDatabase($manifest['project'], [
+                    'name' => $this->argument('name'),
+                    'engine' => $this->option('engine'),
+                    'node' => $this->option('node'),
+                ]);
+        } catch (LoginRequiredException $e) {
+            return $this->loginRequired($e);
+        }
 
 
         if ($result->success()) {

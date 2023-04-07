@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Exceptions\LoginRequiredException;
 use App\Traits\InteractsWithMaidApi;
 use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
 use Maid\Sdk\Maid;
@@ -33,9 +34,13 @@ class ClusterListCommand extends Command
      */
     public function handle(Maid $maid): int
     {
-        $result = $maid
-            ->withUserAccessToken()
-            ->getClusters();
+        try {
+            $result = $maid
+                ->withUserAccessToken()
+                ->getClusters();
+        } catch (LoginRequiredException $e) {
+            return $this->loginRequired($e);
+        }
 
         if ($result->success()) {
             $this->resultAsTable($result, $this);

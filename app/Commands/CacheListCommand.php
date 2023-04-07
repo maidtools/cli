@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Exceptions\LoginRequiredException;
 use App\Traits\InteractsWithMaidApi;
 use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
 use Maid\Sdk\Maid;
@@ -36,9 +37,13 @@ class CacheListCommand extends Command
     {
         $manifest = Manifest::get();
 
-        $result = $maid
-            ->withUserAccessToken()
-            ->getCaches($manifest['project']);
+        try {
+            $result = $maid
+                ->withUserAccessToken()
+                ->getCaches($manifest['project']);
+        } catch (LoginRequiredException $e) {
+            return $this->loginRequired($e);
+        }
 
         if ($result->success()) {
             $this->resultAsTable($result, $this);

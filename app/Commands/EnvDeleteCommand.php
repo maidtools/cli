@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Exceptions\LoginRequiredException;
 use App\Traits\InteractsWithMaidApi;
 use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
 use Maid\Sdk\Maid;
@@ -35,9 +36,13 @@ class EnvDeleteCommand extends Command
     {
         $manifest = Manifest::get();
 
-        $result = $maid
-            ->withUserAccessToken()
-            ->flushEnvironmentVariables($manifest['project'], $this->argument('environment'));
+        try {
+            $result = $maid
+                ->withUserAccessToken()
+                ->flushEnvironmentVariables($manifest['project'], $this->argument('environment'));
+        } catch (LoginRequiredException $e) {
+            return $this->loginRequired($e);
+        }
 
         if ($result->success()) {
             $this->info('Environment has been flushed.');

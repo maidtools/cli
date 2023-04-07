@@ -2,10 +2,10 @@
 
 namespace App\Commands;
 
+use App\Exceptions\LoginRequiredException;
 use App\Traits\InteractsWithMaidApi;
 use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
 use Maid\Sdk\Maid;
-use Maid\Sdk\Support\Manifest;
 use GuzzleHttp\Exception\GuzzleException;
 use LaravelZero\Framework\Commands\Command;
 
@@ -33,9 +33,13 @@ class DatabaseDeleteCommand extends Command
      */
     public function handle(Maid $maid): int
     {
-        $result = $maid
-            ->withUserAccessToken()
-            ->deleteDatabase($this->argument('database'));
+        try {
+            $result = $maid
+                ->withUserAccessToken()
+                ->deleteDatabase($this->argument('database'));
+        } catch (LoginRequiredException $e) {
+            return $this->loginRequired($e);
+        }
 
         if ($result->success()) {
             $this->info('Database deletion initiated successfully.');

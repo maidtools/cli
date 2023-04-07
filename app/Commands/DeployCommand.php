@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Exceptions\LoginRequiredException;
 use App\Traits\InteractsWithMaidApi;
 use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
 use Maid\Sdk\Maid;
@@ -51,13 +52,17 @@ class DeployCommand extends Command
 
         $this->info('Deploying the application...');
 
-        $result = $maid
-            ->withUserAccessToken()
-            ->createDeployment($manifest['project'], [
-                'environment' => $this->argument('environment'),
-                'manifest' => $manifest,
-                'revision' => $revision,
-            ]);
+        try {
+            $result = $maid
+                ->withUserAccessToken()
+                ->createDeployment($manifest['project'], [
+                    'environment' => $this->argument('environment'),
+                    'manifest' => $manifest,
+                    'revision' => $revision,
+                ]);
+        } catch (LoginRequiredException $e) {
+            return $this->loginRequired($e);
+        }
 
         if (!$result->success()) {
             return $this->failure($result, 'Deployment failed!');

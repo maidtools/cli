@@ -2,10 +2,10 @@
 
 namespace App\Commands;
 
+use App\Exceptions\LoginRequiredException;
 use App\Traits\InteractsWithMaidApi;
 use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
 use Maid\Sdk\Maid;
-use Maid\Sdk\Support\Manifest;
 use GuzzleHttp\Exception\GuzzleException;
 use LaravelZero\Framework\Commands\Command;
 
@@ -35,14 +35,18 @@ class RecordIngressCommand extends Command
      */
     public function handle(Maid $maid): int
     {
-        $result = $maid
-            ->withUserAccessToken()
-            ->createDomainRecord($this->argument('domain'), [
-                'name' => $this->argument('name'),
-                'type' => 'CNAME',
-                'content' => sprintf('ingress.%s', $this->argument('domain')),
-                'ttl' => $this->option('ttl'),
-            ]);
+        try {
+            $result = $maid
+                ->withUserAccessToken()
+                ->createDomainRecord($this->argument('domain'), [
+                    'name' => $this->argument('name'),
+                    'type' => 'CNAME',
+                    'content' => sprintf('ingress.%s', $this->argument('domain')),
+                    'ttl' => $this->option('ttl'),
+                ]);
+        } catch (LoginRequiredException $e) {
+            return $this->loginRequired($e);
+        }
 
         if ($result->success()) {
             $this->info('Ingress domain record creation initiated successfully.');

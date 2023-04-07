@@ -5,6 +5,7 @@ namespace App\Support;
 use FilesystemIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use RuntimeException;
 
 /**
  * Inspired by: https://github.com/FriendsOfShopware/FroshTools/blob/main/src/Components/CacheHelper.php
@@ -15,6 +16,8 @@ class Filesystem
     {
         if (strncasecmp(PHP_OS, 'WIN', 3) === 0) {
             self::deleteWindowsDirectory($dir);
+
+            return;
         }
 
         self::deleteLinuxDirectory($dir);
@@ -25,7 +28,7 @@ class Filesystem
         $output = null;
         exec('command -v rsync', $output);
 
-        return count($output) > 0;
+        return $output !== null && count($output) > 0;
     }
 
     private static function deleteWindowsDirectory(string $dir): void
@@ -49,7 +52,7 @@ class Filesystem
             $blankDir = sys_get_temp_dir() . '/' . md5($dir . time()) . '/';
 
             if (!mkdir($blankDir, 0777, true) && !is_dir($blankDir)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $blankDir));
+                throw new RuntimeException(sprintf('Directory "%s" was not created', $blankDir));
             }
 
             exec('rsync -a --delete ' . $blankDir . ' ' . $dir . '/');

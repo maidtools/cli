@@ -2,6 +2,8 @@
 
 namespace App\Commands;
 
+use App\Exceptions\LoginRequiredException;
+use App\Traits\InteractsWithMaidApi;
 use Maid\Sdk\Exceptions\RequestRequiresClientIdException;
 use Maid\Sdk\Maid;
 use Maid\Sdk\Support\Manifest;
@@ -10,6 +12,8 @@ use LaravelZero\Framework\Commands\Command;
 
 class EnvPullCommand extends Command
 {
+    use InteractsWithMaidApi;
+
     /**
      * The signature of the command.
      *
@@ -47,9 +51,13 @@ class EnvPullCommand extends Command
         $paginator = null;
 
         do {
-            $result = $maid
-                ->withUserAccessToken()
-                ->getEnvironmentVariables($manifest['project'], $this->argument('environment'), $paginator);
+            try {
+                $result = $maid
+                    ->withUserAccessToken()
+                    ->getEnvironmentVariables($manifest['project'], $this->argument('environment'), $paginator);
+            } catch (LoginRequiredException $e) {
+                return $this->loginRequired($e);
+            }
 
             foreach ($result->data() as $environment) {
                 $value = addslashes($environment->value);

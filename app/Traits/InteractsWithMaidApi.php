@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Exceptions\LoginRequiredException;
 use LaravelZero\Framework\Commands\Command;
 use Maid\Sdk\Result;
 use stdClass;
@@ -13,6 +14,15 @@ use Symfony\Component\Console\Helper\TableCellStyle;
  */
 trait InteractsWithMaidApi
 {
+    protected function loginRequired(LoginRequiredException $exception): int
+    {
+        $this->error($exception->getMessage());
+        $this->info('Please login to your Maid account by executing the following command:');
+        $this->comment('maid login');
+
+        return self::FAILURE;
+    }
+
     protected function resultAsTable(Result $result, Command $command): void
     {
         $attributes = explode(',', $command->option('fields'));
